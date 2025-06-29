@@ -6,7 +6,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { ClipLoader } from "react-spinners";
 
 function App() {
-  const API_KEY = import.meta.env.OPEN_WHEATHER_MAP_API_KEY;
+  const API_KEY = import.meta.env.VITE_OPEN_WEATHER_MAP_API_KEY;
   const [weather, setWeather] = useState(null);
   const [selectedCity, setSelectedCity] = useState(null);
   const [loading, setLoading] = useState(false);
