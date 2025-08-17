@@ -5,18 +5,32 @@ import WeatherButton from "./component/WeatherButton";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { ClipLoader } from "react-spinners";
 
+// APIから取得する天候データの型定義
+interface WeatherData {
+  cod: number;
+  name: string;
+  main: {
+    temp: number;
+    humidity: number;
+  };
+  weather: {
+    description: string;
+    icon: string;
+  }[];
+}
+
 function App() {
-  const API_KEY = import.meta.env.VITE_OPEN_WEATHER_MAP_API_KEY;
-  const [weather, setWeather] = useState(null);
-  const [selectedCity, setSelectedCity] = useState(null);
+  const API_KEY = import.meta.env.VITE_OPEN_WEATHER_MAP_API_KEY as string;
+  const [weather, setWeather] = useState<WeatherData | null>(null);
+  const [selectedCity, setSelectedCity] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const cities = ["Seoul", "Tokyo", "California", "Florida", "Paris"];
 
-  const fetchWeatherData = async (url) => {
+  const fetchWeatherData = async (url: string) => {
     setLoading(true);
     try {
       const response = await fetch(url);
-      const data = await response.json();
+      const data: WeatherData = await response.json();
       setWeather(data);
     } catch (error) {
       console.error("Failed to fetch weather data:", error);
@@ -25,7 +39,7 @@ function App() {
     }
   };
 
-  const getWeatherByCurrentLocation = (lat, lon) => {
+  const getWeatherByCurrentLocation = (lat: number, lon: number) => {
     const url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${API_KEY}&units=metric`;
     fetchWeatherData(url);
   };
@@ -38,8 +52,10 @@ function App() {
   };
 
   const getWeatherByCity = () => {
-    const url = `https://api.openweathermap.org/data/2.5/weather?q=${selectedCity}&appid=${API_KEY}&units=metric`;
-    fetchWeatherData(url);
+    if (selectedCity) {
+      const url = `https://api.openweathermap.org/data/2.5/weather?q=${selectedCity}&appid=${API_KEY}&units=metric`;
+      fetchWeatherData(url);
+    }
   };
 
   useEffect(() => {

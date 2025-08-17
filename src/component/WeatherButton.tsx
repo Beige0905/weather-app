@@ -1,7 +1,17 @@
 import React from "react";
 import { Button } from "react-bootstrap";
 
-const WeatherButton = ({ cities, selectedCity, setSelectedCity }) => {
+interface WeatherButtonProps {
+  cities: string[];
+  selectedCity: string | null;
+  setSelectedCity: React.Dispatch<React.SetStateAction<string | null>>;
+}
+
+const WeatherButton: React.FC<WeatherButtonProps> = ({
+  cities,
+  selectedCity,
+  setSelectedCity,
+}) => {
   return (
     <div className="mt-3">
       <Button
