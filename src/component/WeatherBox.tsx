@@ -1,6 +1,23 @@
 import React from "react";
 
-const WeatherBox = ({ weather }) => {
+// APIから取得する天候データの型定義
+interface WeatherData {
+  cod: number;
+  name: string;
+  main: {
+    temp: number;
+  };
+  weather: {
+    description: string;
+    icon: string;
+  }[];
+}
+
+interface WeatherBoxProps {
+  weather: WeatherData | null;
+}
+
+const WeatherBox: React.FC<WeatherBoxProps> = ({ weather }) => {
   if (!weather) {
     return <div className="weather-box" style={{ minHeight: "380px" }}></div>;
   }
